@@ -37,7 +37,7 @@ $(".newVote").click(function (e) {
                 if (data_type === 'answer')
                     $('#voteAnswer' + data_id).html(response);
                 else
-                    $('#voteQuestion' + data_id).html(response);
+                    $('#votePost' + data_id).html(response);
             },
             error: function () {
                 alert(0)

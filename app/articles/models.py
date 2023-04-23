@@ -63,25 +63,25 @@ class LikeDislike(models.Model):
         return self.user
 
 
-class QuestionManager(models.Manager):
-    def create_question(self, **kwargs):
+class PostManager(models.Manager):
+    def create_post(self, **kwargs):
         tags = kwargs['tags']
-        question = self.create(author=kwargs.get('author'), title=kwargs.get('title'), text=kwargs.get('text'),
+        post = self.create(author=kwargs.get('author'), title=kwargs.get('title'), text=kwargs.get('text'),
                                is_pinned=kwargs.get('is_pinned'))
-        question.save()
+        post.save()
         for tag in tags:
             current_tag = Tag.objects.add_tags(tag)
-            question.tags.add(current_tag)
-        return question
+            post.tags.add(current_tag)
+        return post
 
 
-class Question(models.Model):
-    objects = QuestionManager()
+class Post(models.Model):
+    objects = PostManager()
     author = models.ForeignKey(User, on_delete=models.CASCADE)
     title = models.CharField(max_length=255)
     text = models.TextField()
     create_date = models.DateTimeField(auto_now_add=True)
-    tags = models.ManyToManyField('Tag', blank=True, related_name='questions')
+    tags = models.ManyToManyField('Tag', blank=True, related_name='posts')
     total_answers = models.IntegerField(default=0)
     total_likes = models.IntegerField(default=0)
     is_pinned = models.BooleanField(default=True)
@@ -95,11 +95,11 @@ class Question(models.Model):
 
 
 class AnswerManager(models.Manager):
-    def create_answer(self, author, question, text):
-        answer = self.create(author=author, question=question, text=text)
-        question = Question.objects.get(id=question.id)
-        question.total_answers += 1
-        question.save(update_fields=['total_answers'])
+    def create_answer(self, author, post, text):
+        answer = self.create(author=author, post=post, text=text)
+        post = Post.objects.get(id=post.id)
+        post.total_answers += 1
+        post.save(update_fields=['total_answers'])
 
         return answer
 
@@ -107,7 +107,22 @@ class AnswerManager(models.Manager):
 class Answer(models.Model):
     objects = AnswerManager()
     author = models.ForeignKey(User, on_delete=models.CASCADE)
-    question = models.ForeignKey(Question, on_delete=models.CASCADE)
+    post = models.ForeignKey(Post, on_delete=models.CASCADE)
+    text = models.TextField()
+    create_date = models.DateTimeField(auto_now_add=True)
+    total_likes = models.IntegerField(default=0)
+    correct = models.BooleanField(blank=True, default=False)
+
+    def publish(self):
+        self.create_date = timezone.now()
+        self.save()
+
+    def __str__(self):
+        return self.text
+
+class Lab(models.Model):
+    author = models.ForeignKey(User, on_delete=models.CASCADE)
+    linked_post = models.ForeignKey(Post, on_delete=models.CASCADE)
     text = models.TextField()
     create_date = models.DateTimeField(auto_now_add=True)
     total_likes = models.IntegerField(default=0)

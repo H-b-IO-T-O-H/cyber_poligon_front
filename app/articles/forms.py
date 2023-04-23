@@ -1,7 +1,7 @@
 from django import forms
 
 
-class QuestionForm(forms.Form):
+class PostForm(forms.Form):
 	title = forms.CharField(label='Заголовок', max_length=255)
 	text = forms.CharField(label='Пост', widget=forms.Textarea(attrs={'rows': '3'}))
 	tags = forms.CharField(label="Тэги", required=False, max_length=50)

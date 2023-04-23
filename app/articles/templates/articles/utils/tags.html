@@ -3,7 +3,7 @@
 
 {% block content %}
     <h3 class="font-italic mt-1">Posts with "{{ tag.tag_name }}" tag:</h3>
-    {% for question in tag.questions.all %}
+    {% for post in tag.posts.all %}
         {% include 'articles/utils/card.html' %}
     {% endfor %}
 {% endblock %}

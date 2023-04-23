@@ -16,8 +16,11 @@
         <input class="form-control" type="search" placeholder="Search" aria-label="Search">
     </form>
     <div class="col-3 text-right">
-        <a href="{% url 'articles:ask' %}">
-            <button class="btn btn-success btn-lg my-2 center-block" type="submit">ASK!</button>
+        <a href="{% url 'articles:new_post' %}">
+            <button class="btn btn-success btn-lg my-2 center-block" type="submit">Пост</button>
+        </a>
+        <a href="{% url 'articles:new_post' %}">
+            <button class="btn btn-success btn-lg my-2 center-block" type="submit">Каталог ЛР</button>
         </a>
     </div>
     <div class="col-3">

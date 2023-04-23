@@ -11,7 +11,7 @@ class Migration(migrations.Migration):
 
     operations = [
         migrations.AddField(
-            model_name="question",
+            model_name="post",
             name="is_pinned",
             field=models.BooleanField(default=True),
         ),

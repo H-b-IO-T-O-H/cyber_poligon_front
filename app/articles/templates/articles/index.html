@@ -18,7 +18,7 @@
                 </li>
             </div>
         </div>
-        {% for question in page_object %}
+        {% for post in page_object %}
             {% include 'articles/utils/card.html' %}
         {% endfor %}
         {% if is_paginated %}

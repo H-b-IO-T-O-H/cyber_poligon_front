@@ -3,14 +3,14 @@
 {% load crispy_forms_filters %}
 {% block content %}
     <div class="text-center new_question my-1">
-        <h3 class="font-italic">New question</h3>
+        <h3 class="font-italic">New post</h3>
     </div>
     <div class="card mt-3">
         <div class="card-body">
             {% if error %}
                 <div class="alert alert-danger">{{ error }}</div>
             {% endif %}
-            <form method="POST" action="{% url 'articles:ask' %}">
+            <form method="POST" action="{% url 'articles:new_post' %}">
                 {% csrf_token %}
                 {{ form|crispy }}
                 <div class="col ask_btn text-center">

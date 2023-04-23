@@ -27,19 +27,19 @@
             </button>
         {% else %}
             <button type="submit"
-                    data-object="question"
+                    data-object="post"
                     data-action="up-vote"
                     data-user="{{ user.id }}"
-                    data-id="{{ question.id }}"
+                    data-id="{{ post.id }}"
                     class="like btn-xs bg-light rounded">
                 <img src="{% static 'images/caret-up.svg' %}" width="20" height="20" alt="">
             </button>
-            <button type="button" class="btn btn-light" id="vote{{ question.id }}" disabled>
+            <button type="button" class="btn btn-light" id="vote{{ post.id }}" disabled>
                 <strong class="font-italic">
-                    {% if question.total_likes == -1 %}
+                    {% if post.total_likes == -1 %}
                         kkk
                     {% else %}
-                        {{ question.total_likes }}
+                        {{ post.total_likes }}
                     {% endif %}
                 </strong>
             </button>
@@ -47,7 +47,7 @@
                     data-object="answer"
                     data-action="down-vote"
                     data-user="{{ user.id }}"
-                    data-id="{{ question.id }}"
+                    data-id="{{ post.id }}"
                     class="like btn-xs bg-light rounded">
                 <img src="{% static 'images/caret-down.svg' %}" width="20" height="20" alt="">
             </button>

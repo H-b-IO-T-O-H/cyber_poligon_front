@@ -24,7 +24,7 @@ class Migration(migrations.Migration):
             ],
         ),
         migrations.CreateModel(
-            name='Question',
+            name='Post',
             fields=[
                 ('id', models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
                 ('title', models.CharField(max_length=255)),
@@ -33,7 +33,7 @@ class Migration(migrations.Migration):
                 ('total_answers', models.IntegerField(default=0)),
                 ('total_likes', models.IntegerField(default=0)),
                 ('author', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to=settings.AUTH_USER_MODEL)),
-                ('tags', models.ManyToManyField(blank=True, related_name='questions', to='articles.Tag')),
+                ('tags', models.ManyToManyField(blank=True, related_name='posts', to='articles.Tag')),
             ],
         ),
         migrations.CreateModel(
@@ -55,7 +55,7 @@ class Migration(migrations.Migration):
                 ('total_likes', models.IntegerField(default=0)),
                 ('correct', models.BooleanField(blank=True, default=False)),
                 ('author', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to=settings.AUTH_USER_MODEL)),
-                ('question', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='articles.Question')),
+                ('post', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='articles.Post')),
             ],
         ),
     ]
