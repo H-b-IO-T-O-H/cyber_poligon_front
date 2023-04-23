@@ -1,6 +1,6 @@
 from django.urls import path
 from articles import views
-from articles.models import LikeDislike, Post, Answer
+from articles.models import LikeDislike, Post, Comment
 
 app_name = 'articles'
 urlpatterns = [

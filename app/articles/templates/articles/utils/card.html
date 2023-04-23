@@ -14,7 +14,7 @@
     <div class="card-body">
         <div class="row">
             <div class="row col-3">
-                {% include 'articles/utils/likeDisQuestions.html' %}
+                {% include 'articles/utils/likeDisPosts.html' %}
                 <div class="row col-7">
                     {% if post.author.avatar != '' %}
                         <img class="user_avatar card-img" src="{% static post.author.avatar %}" alt="no avatar">
@@ -32,7 +32,7 @@
                     <a href="{% url 'articles:display_single' post.id %}" class="col-6 stretched-link">Continue
                         reading</a>
                     <a href="{% url 'articles:display_single' post.id %}"
-                       class="col-6 text-right stretched-link">Answers({{ post.total_answers }})</a>
+                       class="col-6 text-right stretched-link">Comments({{ post.total_comments }})</a>
                 </div>
             </div>
         </div>

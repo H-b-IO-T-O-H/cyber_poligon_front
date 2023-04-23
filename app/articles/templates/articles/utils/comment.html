@@ -2,24 +2,24 @@
 <div class="card border-dark mb-3">
     <div class="card-header">
         <div class="row">
-            <h3 class="col-2">{{ answer.author }}</h3>
-            <p class="col-10 text-right"> {{ answer.create_date }}</p>
+            <h3 class="col-2">{{ comment.author }}</h3>
+            <p class="col-10 text-right"> {{ comment.create_date }}</p>
         </div>
     </div>
     <div class="card-body text-dark">
         <div class="row">
             <div class="row col-3">
-                 {% include 'articles/utils/likeDisAnswers.html' %}
+                 {% include 'articles/utils/likeDisComments.html' %}
                 <div class="row col-7">
-                    {% if answer.author.avatar != '' %}
-                        <img class="user_avatar card-img" src="{% static answer.author.avatar %}" alt="no avatar">
+                    {% if comment.author.avatar != '' %}
+                        <img class="user_avatar card-img" src="{% static comment.author.avatar %}" alt="no avatar">
                     {% else %}
                         <img class="user_avatar card-img" src="{% static 'default_avatar.svg' %}" alt="">
                     {% endif %}
                 </div>
             </div>
             <div class="col-9">
-                <p class="card-text">{{ answer.text }}</p>
+                <p class="card-text">{{ comment.text }}</p>
                 <div class="form-group form-check text-right">
                     <input type="checkbox" class="form-check-input" id="exampleCheck1">
                     <label class="form-check-label" for="exampleCheck1">Correct</label>

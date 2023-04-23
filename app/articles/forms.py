@@ -25,8 +25,8 @@ class PostForm(forms.Form):
 		return self.cleaned_data['pinned']
 
 
-class AnswerForm(forms.Form):
-	text = forms.CharField(label='Your answer', widget=forms.Textarea(attrs={'rows': '3'}))
+class CommentForm(forms.Form):
+	text = forms.CharField(label='Your comment', widget=forms.Textarea(attrs={'rows': '3'}))
 
 	def clean(self):
 		return self.cleaned_data

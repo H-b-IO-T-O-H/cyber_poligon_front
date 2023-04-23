@@ -34,8 +34,8 @@ $(".newVote").click(function (e) {
             type: 'POST',
             data: data_all,
             success: function (response) {
-                if (data_type === 'answer')
-                    $('#voteAnswer' + data_id).html(response);
+                if (data_type === 'comment')
+                    $('#voteComment' + data_id).html(response);
                 else
                     $('#votePost' + data_id).html(response);
             },

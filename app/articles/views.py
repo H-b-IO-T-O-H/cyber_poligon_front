@@ -1,5 +1,5 @@
-from articles.forms import PostForm, AnswerForm
-from articles.models import Post, Answer, Tag, LikeDislike
+from articles.forms import PostForm, CommentForm
+from articles.models import Post, Comment, Tag, LikeDislike
 from django.contrib.auth.decorators import login_required
 from django.core.handlers.wsgi import WSGIRequest
 from django.core.paginator import Paginator
@@ -14,7 +14,7 @@ def index(request: WSGIRequest):
     if len(filters) == 1:
         query_filter = list(filters)[0]
     filter_map = {
-        "popular": "-total_answers",
+        "popular": "-total_comments",
         "pinned": "-is_pinned",
     }
 
@@ -54,21 +54,21 @@ def display_single(request, post_id):
     if request.method == 'POST':
         if not request.user.is_authenticated:
             return redirect('accounts:login')
-        form = AnswerForm(request.POST)
+        form = CommentForm(request.POST)
         if not form.is_valid():
             context.update({'form': form})
-        answer_full = Answer.objects.create_answer(author=request.user, post=post,
+        comment_full = Comment.objects.create_comment(author=request.user, post=post,
                                                    text=form.cleaned_data['text'])
-        answer_full.save()
+        comment_full.save()
         return redirect('../post/{}'.format(post.id))
-    answers = Answer.objects.filter(post=post_id).order_by('-create_date')
-    answers_context = paginate(answers, request, 3)
-    form = AnswerForm()
+    comments = Comment.objects.filter(post=post_id).order_by('-create_date')
+    comments_context = paginate(comments, request, 3)
+    form = CommentForm()
     context.update({'form': form, 'post': post,
-                    'page_object': answers_context['page_object'],
-                    'is_paginated': answers_context['is_paginated'],
-                    'next_url': answers_context['next_url'],
-                    'prev_url': answers_context['prev_url']})
+                    'page_object': comments_context['page_object'],
+                    'is_paginated': comments_context['is_paginated'],
+                    'next_url': comments_context['next_url'],
+                    'prev_url': comments_context['prev_url']})
     return render(request, 'articles/utils/post.html', context=context)
 
 
@@ -113,7 +113,7 @@ def vote(request):
     if data_type == 'post':
         data_object = Post.objects.get(pk=data_id)
     else:
-        data_object = Answer.objects.get(pk=data_id)
+        data_object = Comment.objects.get(pk=data_id)
     LikeDislike.objects.create_like_dislike(user, instance=data_object, object_id=data_id, action=action)
 
     return HttpResponse(data_object.total_likes, status=200)

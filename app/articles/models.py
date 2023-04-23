@@ -1,6 +1,5 @@
 from accounts.models import User
 from django.contrib.contenttypes.fields import GenericForeignKey
-from django.contrib.contenttypes.fields import GenericRelation
 from django.contrib.contenttypes.models import ContentType
 from django.db import models
 from django.utils import timezone
@@ -82,7 +81,7 @@ class Post(models.Model):
     text = models.TextField()
     create_date = models.DateTimeField(auto_now_add=True)
     tags = models.ManyToManyField('Tag', blank=True, related_name='posts')
-    total_answers = models.IntegerField(default=0)
+    total_comments = models.IntegerField(default=0)
     total_likes = models.IntegerField(default=0)
     is_pinned = models.BooleanField(default=True)
 
@@ -94,18 +93,18 @@ class Post(models.Model):
         return self.title
 
 
-class AnswerManager(models.Manager):
-    def create_answer(self, author, post, text):
-        answer = self.create(author=author, post=post, text=text)
+class CommentManager(models.Manager):
+    def create_comment(self, author, post, text):
+        comment = self.create(author=author, post=post, text=text)
         post = Post.objects.get(id=post.id)
-        post.total_answers += 1
-        post.save(update_fields=['total_answers'])
+        post.total_comments += 1
+        post.save(update_fields=['total_comments'])
 
-        return answer
+        return comment
 
 
-class Answer(models.Model):
-    objects = AnswerManager()
+class Comment(models.Model):
+    objects = CommentManager()
     author = models.ForeignKey(User, on_delete=models.CASCADE)
     post = models.ForeignKey(Post, on_delete=models.CASCADE)
     text = models.TextField()

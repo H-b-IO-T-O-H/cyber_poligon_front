@@ -1,27 +1,27 @@
 {% block content %}
     {% load static %}
     <div class="col-4 mt-2 text-center">
-        {% if answer %}
+        {% if comment %}
             <button type="submit"
-                    data-object="answer"
+                    data-object="comment"
                     data-action="up-vote"
                     data-user="{{ user.id }}"
-                    data-id="{{ answer.id }}"
+                    data-id="{{ comment.id }}"
                     class="like btn-xs bg-light rounded">
                 <img src="{% static 'images/caret-up.svg' %}" width="20" height="20" alt="">
             </button>
             <strong class="font-italic">
-                {% if answer.total_likes == -1 %}
+                {% if comment.total_likes == -1 %}
                     0
                 {% else %}
-                    {{ answer.total_likes }}
+                    {{ comment.total_likes }}
                 {% endif %}
             </strong>
             <button type="submit"
-                    data-object="answer"
+                    data-object="comment"
                     data-action="down-vote"
                     data-user="{{ user.id }}"
-                    data-id="{{ answer.id }}"
+                    data-id="{{ comment.id }}"
                     class="like btn-xs bg-light rounded">
                 <img src="{% static 'images/caret-down.svg' %}" width="20" height="20" alt="">
             </button>
@@ -44,7 +44,7 @@
                 </strong>
             </button>
             <button type="submit"
-                    data-object="answer"
+                    data-object="comment"
                     data-action="down-vote"
                     data-user="{{ user.id }}"
                     data-id="{{ post.id }}"

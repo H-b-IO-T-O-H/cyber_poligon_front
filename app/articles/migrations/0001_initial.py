@@ -30,7 +30,7 @@ class Migration(migrations.Migration):
                 ('title', models.CharField(max_length=255)),
                 ('text', models.TextField()),
                 ('create_date', models.DateTimeField(auto_now_add=True)),
-                ('total_answers', models.IntegerField(default=0)),
+                ('total_comments', models.IntegerField(default=0)),
                 ('total_likes', models.IntegerField(default=0)),
                 ('author', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to=settings.AUTH_USER_MODEL)),
                 ('tags', models.ManyToManyField(blank=True, related_name='posts', to='articles.Tag')),
@@ -47,7 +47,7 @@ class Migration(migrations.Migration):
             ],
         ),
         migrations.CreateModel(
-            name='Answer',
+            name='Comment',
             fields=[
                 ('id', models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
                 ('text', models.TextField()),

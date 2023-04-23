@@ -4,7 +4,7 @@
 <link rel="stylesheet" href="{% static 'css/post.css' %}">
 
 {% block content %}
-    <div class="card card_answer ">
+    <div class="card card_comment ">
         <div class="card-header">
             <div class="row">
                 <h3 class="col-2">{{ post.author }}</h3>
@@ -14,7 +14,7 @@
         <div class="card-body">
             <div class="row">
                 <div class="row col-3">
-                    {% include 'articles/utils/likeDisQuestions.html' %}
+                    {% include 'articles/utils/likeDisPosts.html' %}
                     <div class="row col-7">
                         {% if post.author.avatar != '' %}
                             <img class="user_avatar card-img" src="{% static post.author.avatar %}" alt="no avatar">
@@ -40,20 +40,20 @@
         </div>
     </div>
     {% if page_object %}
-        <h3 class="font-italic mt-3">Answers({{ post.total_answers }})</h3>
-        {% for answer in page_object %}
-            {% include 'articles/utils/answer.html' %}
+        <h3 class="font-italic mt-3">Comments({{ post.total_comments }})</h3>
+        {% for comment in page_object %}
+            {% include 'articles/utils/comment.html' %}
         {% endfor %}
         {% if is_paginated %}
             {% include 'articles/utils/paginator.html' %}
         {% endif %}
     {% endif %}
     {% if request.user.is_anonymous %}
-        <h3 class="font-italic my-3">Only registered users can add answers!</h3>
+        <h3 class="font-italic my-3">Only registered users can add comments!</h3>
     {% else %}
         <div class="mt-3">
-            <div class="text-center new_answer ">
-                <h3 class="font-italic">Your Answer</h3>
+            <div class="text-center new_comment ">
+                <h3 class="font-italic">Your Comment</h3>
             </div>
             <div class="card mb-5">
                 <div class="card-body">
@@ -66,7 +66,7 @@
                         {% endif %}
                         {{ form|crispy }}
                         <div class="col OK_btn text-center">
-                            <button class="btn btn-success" id="ans" type="submit">Answer</button>
+                            <button class="btn btn-success" id="ans" type="submit">Comment</button>
                         </div>
                     </form>
                 </div>
