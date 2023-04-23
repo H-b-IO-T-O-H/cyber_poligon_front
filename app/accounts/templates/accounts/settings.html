@@ -1,0 +1,23 @@
+{% extends 'articles/base.html' %}
+{% load crispy_forms_filters %}
+{% block content %}
+    
+    <div class="text-center registration my-1">
+        <h3 class="font-italic">Settings</h3>
+    </div>
+    <div class="card mt-3">
+        <div class="card-body">
+            <form method="POST" action="{% url 'accounts:settings' %}">
+                {% csrf_token %}
+                {% if error %}
+                    <div class="alert alert-danger">{{ error }}</div>
+                {% endif %}
+                {{ form|crispy }}
+                <div class="col ask_btn text-center">
+                    <button class="btn btn-success" id="edit" type="submit">SAVE</button>
+                </div>
+            </form>
+        </div>
+    </div>
+    
+{% endblock %}

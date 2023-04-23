@@ -1,0 +1,9 @@
+{% extends 'articles/base.html' %}
+{% load static %}
+
+{% block content %}
+    <h3 class="font-italic mt-1">Posts with "{{ tag.tag_name }}" tag:</h3>
+    {% for question in tag.questions.all %}
+        {% include 'articles/utils/card.html' %}
+    {% endfor %}
+{% endblock %}

@@ -1,0 +1,22 @@
+{% block content %}
+    {% load static %}
+    <div class="col-4 mt-2 text-center">
+        <button type="submit"
+                data-type="question"
+                data-action="up"
+                data-id="{{ question.id }}"
+                class="col newVote btn-xs bg-light rounded">
+            <img src="{% static 'images/caret-up.svg' %}" width="20" height="20" alt="">
+        </button>
+        <strong class="col font-italic" id="voteQuestion{{ question.id }}">
+                {{ question.total_likes }}
+        </strong>
+        <button type="submit"
+                data-type="question"
+                data-action="down"
+                data-id="{{ question.id }}"
+                class="col newVote btn-xs bg-light rounded">
+            <img src="{% static 'images/caret-down.svg' %}" width="20" height="20" alt="">
+        </button>
+    </div>
+{% endblock %}

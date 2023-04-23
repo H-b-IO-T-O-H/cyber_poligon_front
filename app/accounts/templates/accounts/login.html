@@ -1,0 +1,26 @@
+{% extends 'articles/base.html' %}
+{% load crispy_forms_filters %}
+{% block content %}
+
+    <div class="text-center new_question my-1">
+        <h3 class="font-italic">Log in</h3>
+    </div>
+    <div class="card mt-3">
+        <div class="card-body">
+            <form method="POST" action="{% url 'accounts:login' %}">
+                {% csrf_token %}
+                {% if error %}
+                    <div class="alert alert-danger">{{ error }}</div>
+                    <a href="{% url 'accounts:registration' %}">
+                        <button class="btn btn-success btn-lg my-2" type="button">Register</button>
+                    </a>
+                {% endif %}
+                {{ form|crispy }}
+                <div class="col OK_btn text-center">
+                    <button class="btn btn-success" id="edit" type="submit">OK</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+{% endblock %}

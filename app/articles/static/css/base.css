@@ -1,0 +1,59 @@
+
+.Login_and_Register a {
+    text-decoration: none;
+}
+
+.Login_and_Register {
+    margin-top: 5%;
+    text-align: right;
+}
+
+.avatar img {
+    border: 1px solid #ddd;
+    border-radius: 10%;
+    width: 70px;
+    height: 60px;
+}
+
+.avatar {
+    text-align: right;
+}
+
+.card_answer {
+    margin-top: 55px
+}
+
+.user_avatar {
+    width: 80px;
+    height: 100px;
+}
+
+.username {
+    color: white;
+}
+
+.Logout_and_Settings a {
+    text-decoration: none;
+}
+
+.popular_tags li {
+    font-weight: 600;
+}
+
+.popular_tags li a {
+    color: #1e7e34;
+    text-decoration: none;
+}
+
+.nav_popular {
+    padding-top: 0;
+    padding-bottom: 0;
+    margin-top: 3px;
+    margin-bottom: 3px;
+}
+
+.navbar {
+    background: #155599;
+}
+
+#4e555b
