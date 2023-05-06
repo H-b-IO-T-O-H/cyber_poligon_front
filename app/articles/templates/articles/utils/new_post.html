@@ -8,11 +8,18 @@
     <div class="card mt-3">
         <div class="card-body">
             {% if error %}
-                <div class="alert alert-danger">{{ error }}</div>
+                <div class="alert alert-short alert-danger">{{ error }}</div>
             {% endif %}
             <form method="POST" action="{% url 'articles:new_post' %}">
                 {% csrf_token %}
                 {{ form|crispy }}
+                <script>
+                    let post_type = document.getElementById('id_post_type_1')
+                    if (post_type.value === 'lab') {
+
+                    }
+
+                </script>
                 <div class="col ask_btn text-center">
                     <button class="btn btn-success" id="edit" type="submit">ASK</button>
                 </div>

@@ -12,9 +12,10 @@
                  {% include 'articles/utils/likeDisComments.html' %}
                 <div class="row col-7">
                     {% if comment.author.avatar != '' %}
-                        <img class="user_avatar card-img" src="{% static comment.author.avatar %}" alt="no avatar">
+                        <img class="user_avatar card-img" src="{{ MEDIA_URL }}{{ comment.author.avatar }}"
+                             alt="no avatar">
                     {% else %}
-                        <img class="user_avatar card-img" src="{% static 'default_avatar.svg' %}" alt="">
+                        <img class="user_avatar card-img" src="{% static 'avatars/default_avatar.svg' %}" alt="">
                     {% endif %}
                 </div>
             </div>

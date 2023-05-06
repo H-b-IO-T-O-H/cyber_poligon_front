@@ -26,7 +26,7 @@ class UserManage(UserManager):
 
 class User(AbstractUser):
 	objects = UserManage()
-	avatar = models.ImageField(upload_to=f'accounts/static/avatars/', null=True, blank=True)
+	avatar = models.ImageField(null=True, blank=True)
 
 	def __str__(self):
 		return self.username

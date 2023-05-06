@@ -43,7 +43,6 @@ INSTALLED_APPS = [
     'accounts',
     'crispy_forms',
     'grappelli',
-    # 'core',
 ]
 
 CRISPY_TEMPLATE_PACK = 'bootstrap4'
@@ -72,6 +71,7 @@ TEMPLATES = [
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
+                'django.template.context_processors.media',
                 'articles.context_processors.popular_data',
             ],
         },
@@ -124,9 +124,12 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/3.0/howto/static-files/
 
-STATIC_URL = '/static/'
-STATIC_ROOT = os.path.join(PROJECT_ROOT, 'static')
-STATICFILES_DIRS = [
-    os.path.join(BASE_DIR, 'accounts/media'),
-    os.path.join(BASE_DIR, 'accounts/static/avatars')
-]
+MEDIA_URL = "/media_files/"
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media_files')
+
+STATIC_URL = '/statics/'
+STATIC_ROOT = os.path.join(BASE_DIR, 'statics')
+LAB_SCRIPTS_FOLDER = os.path.join(BASE_DIR, 'labs')
+# STATICFILES_DIRS = [
+#     os.path.join(BASE_DIR, 'accounts/media/avatars'),
+# ]

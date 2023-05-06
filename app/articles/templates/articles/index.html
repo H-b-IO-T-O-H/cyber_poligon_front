@@ -1,23 +1,23 @@
 {% extends 'articles/base.html' %}
 {% load static %}
 {% block content %}
-    {% if page_object %}
-        <div class="nav_popular list-group-item rounded">
-            <div class="nav nav-pills">
-                <li class="col-4 btn-sm text-center">
-                    <a class="font-italic nav-link {% if sort_key == '-is_pinned' %} active {% endif %}"
-                       href="?pinned"><strong>Закрепленное</strong></a>
-                </li>
-                <li class="col-4 btn-sm text-center">
-                    <a class="font-italic nav-link {% if sort_key == '-create_date' %} active {% endif %}"
-                       href="{% url 'articles:Cat In Hat' %}"><strong>Новое</strong></a>
-                </li>
-                <li class="col-4 btn-sm text-center">
-                    <a class="font-italic nav-link {% if sort_key == '-total_comments'  %} active {% endif %}"
-                       href="?popular"><strong>Популярное</strong></a>
-                </li>
-            </div>
+    <div class="nav_popular list-group-item rounded">
+        <div class="nav nav-pills">
+            <li class="col-4 btn-sm text-center">
+                <a class="font-italic nav-link {% if sort_key == '-is_pinned' %} active {% endif %}"
+                   href="?pinned"><strong>Закрепленное</strong></a>
+            </li>
+            <li class="col-4 btn-sm text-center">
+                <a class="font-italic nav-link {% if sort_key == '-create_date' %} active {% endif %}"
+                   href="{% url 'articles:10-ka Labs' %}"><strong>Новое</strong></a>
+            </li>
+            <li class="col-4 btn-sm text-center">
+                <a class="font-italic nav-link {% if sort_key == '-total_comments' %} active {% endif %}"
+                   href="?popular"><strong>Популярное</strong></a>
+            </li>
         </div>
+    </div>
+    {% if page_object %}
         {% for post in page_object %}
             {% include 'articles/utils/card.html' %}
         {% endfor %}

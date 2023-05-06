@@ -1,0 +1,14 @@
+{% extends 'articles/base.html' %}
+
+{% block content %}
+<div id="labs_catalog">
+    {% if labs %}
+        <h3>Список лабораторных работ:</h3>
+        {% for lab in labs %}
+            {% include 'articles/utils/lab_card.html' %}
+        {% endfor %}
+    {% else %}
+        <h3 class="font-italic">Лабораторные работы не найдены!</h3>
+    {% endif %}
+</div>
+{% endblock %}

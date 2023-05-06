@@ -31,7 +31,7 @@ def registration_view(request):
             user = authenticate(request, username=username, password=password)
             if user is not None:
                 login(request, user)
-            return redirect('articles:Cat In Hat')
+            return redirect('articles:10-ka Labs')
         else:
             return render(request, 'accounts/registration.html',
                           {'form': form, 'error': 'Server error'})
@@ -41,7 +41,7 @@ def registration_view(request):
 
 def login_view(request):
     if request.user.is_authenticated:
-        return redirect('articles:Cat In Hat')
+        return redirect('articles:10-ka Labs')
     if request.method == 'GET':
         return render(request, 'accounts/login.html',
                       {'form': LoginForm})
@@ -54,7 +54,6 @@ def login_view(request):
                               {'error': 'Wrong login or/and password', 'form': form})
             login(request, user)
             prev_link = request.META['HTTP_REFERER'].replace(request.get_full_path(), '')
-            print(request.META['HTTP_REFERER'])
             return redirect(prev_link)
         return render(request, 'accounts/login.html',
                       {'error': 'Full out the forms correctly', 'form': form})
@@ -82,4 +81,4 @@ def settings_view(request):
     form = SettingsForm()
     if request.user.is_authenticated:
         return render(request, 'accounts/settings.html', {'form': form})
-    return redirect('articles:Cat In Hat')
+    return redirect('articles:10-ka Labs')

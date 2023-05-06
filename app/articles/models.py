@@ -65,12 +65,16 @@ class LikeDislike(models.Model):
 class PostManager(models.Manager):
     def create_post(self, **kwargs):
         tags = kwargs['tags']
-        post = self.create(author=kwargs.get('author'), title=kwargs.get('title'), text=kwargs.get('text'),
-                               is_pinned=kwargs.get('is_pinned'))
+        post_type = kwargs.get('post_type')
+        post = self.create(author=kwargs.get('author'), post_type=kwargs.get('post_type'),
+                           title=kwargs.get('title'), text=kwargs.get('text'),
+                           is_pinned=kwargs.get('is_pinned'))
         post.save()
         for tag in tags:
             current_tag = Tag.objects.add_tags(tag)
             post.tags.add(current_tag)
+        if post_type == 'lab':
+            Lab.objects.create_lab(linked_post=post, task_path='')
         return post
 
 
@@ -84,6 +88,7 @@ class Post(models.Model):
     total_comments = models.IntegerField(default=0)
     total_likes = models.IntegerField(default=0)
     is_pinned = models.BooleanField(default=True)
+    post_type = models.CharField(max_length=4, default='post')
 
     def publish(self):
         self.create_date = timezone.now()
@@ -119,17 +124,18 @@ class Comment(models.Model):
     def __str__(self):
         return self.text
 
+
+class LabManager(models.Manager):
+    def create_lab(self, linked_post, task_path):
+        return self.create(linked_post=linked_post, task_path=task_path)
+
+
 class Lab(models.Model):
-    author = models.ForeignKey(User, on_delete=models.CASCADE)
+    objects = LabManager()
     linked_post = models.ForeignKey(Post, on_delete=models.CASCADE)
-    text = models.TextField()
+    task_path = models.CharField(max_length=512, default='')
     create_date = models.DateTimeField(auto_now_add=True)
-    total_likes = models.IntegerField(default=0)
-    correct = models.BooleanField(blank=True, default=False)
 
     def publish(self):
         self.create_date = timezone.now()
         self.save()
-
-    def __str__(self):
-        return self.text

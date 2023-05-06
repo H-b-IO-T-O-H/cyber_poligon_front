@@ -1,0 +1,30 @@
+{% extends 'articles/base.html' %}
+{% load static %}
+
+{% block content %}
+    <div>
+        {% if error %}
+            <div class="alert alert-short alert-danger">
+                {{ error }}
+            </div>
+        {% endif %}
+        {% if status %}
+            <div class="alert alert-short alert-success" role="alert">
+                Загрузка виртуальной среды. Подождите...
+            </div>
+        {% endif %}
+        <div class="card task-status my-5" id="{{ task.user_id }}_{{ task.id }}">
+            <div class="card-body">
+                <h5 class="card-title">Статус лабораторной работы</h5>
+                <p id="lab-description" class="card-text">
+                    Для подготовки виртуальной среды требуется некоторое время. Пожалуйста,
+                    подождите...</p>
+                <div id="lab-load-spin-{{ task.id }}" class="spinner-border" role="status">
+                    <span class="sr-only">Loading...</span>
+                </div>
+                <a href="#" class="btn btn-primary">Go somewhere</a>
+            </div>
+        </div>
+    </div>
+
+{% endblock %}

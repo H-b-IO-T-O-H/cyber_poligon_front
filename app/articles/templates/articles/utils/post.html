@@ -17,9 +17,10 @@
                     {% include 'articles/utils/likeDisPosts.html' %}
                     <div class="row col-7">
                         {% if post.author.avatar != '' %}
-                            <img class="user_avatar card-img" src="{% static post.author.avatar %}" alt="no avatar">
+                            <img class="user_avatar card-img" src="{{ MEDIA_URL }}{{ post.author.avatar }}"
+                             alt="no avatar">
                         {% else %}
-                            <img class="user_avatar card-img" src="{% static 'default_avatar.svg' %}" alt="">
+                            <img class="user_avatar card-img" src="{% static 'avatars/default_avatar.svg' %}" alt="">
                         {% endif %}
                     </div>
                 </div>
@@ -57,10 +58,10 @@
             </div>
             <div class="card mb-5">
                 <div class="card-body">
-                    <form method="POST" action="{% url 'articles:display_single' post.id %}">
+                    <form id="#example-form" method="POST" action="{% url 'articles:display_single' post.id %}">
                         {% csrf_token %}
                         {% if error %}
-                            <div class="alert alert-danger">
+                            <div class="alert alert-short alert-danger">
                                 {{ error }}
                             </div>
                         {% endif %}

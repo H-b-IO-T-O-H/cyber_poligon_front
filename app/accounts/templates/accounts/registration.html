@@ -10,7 +10,7 @@
             <form method="POST" action="{% url 'accounts:registration' %}" enctype="multipart/form-data">
                 {% csrf_token %}
                 {% if error %}
-                    <div class="alert alert-danger">{{ error }}</div>
+                    <div class="alert alert-short alert-danger">{{ error }}</div>
                 {% endif %}
                 {{ form|crispy }}
                 <div class="col ask_btn text-center">
