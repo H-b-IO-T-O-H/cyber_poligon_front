@@ -1,14 +1,15 @@
 from django import forms
 from accounts.models import User
 
+
 class RegistrationForm(forms.Form):
-    username = forms.CharField(max_length=50, help_text="User")
-    first_name = forms.CharField(max_length=50, help_text="Vasya")
-    last_name = forms.CharField(max_length=50, help_text="Pupkin")
-    email = forms.EmailField(max_length=254, help_text="aaa@mail.ru")
-    password = forms.CharField(widget=forms.PasswordInput)
-    repeat_password = forms.CharField(widget=forms.PasswordInput)
-    avatar = forms.ImageField(required=False)
+    username = forms.CharField(max_length=50, help_text="super_vanya", label="Псевдоним")
+    first_name = forms.CharField(max_length=50, help_text="Иван", label="Имя")
+    last_name = forms.CharField(max_length=50, help_text="Иванов", label="Фамилия")
+    email = forms.EmailField(max_length=254, help_text="ivan.ivanov@mail.ru", label="Почта")
+    password = forms.CharField(widget=forms.PasswordInput, label="Пароль")
+    repeat_password = forms.CharField(widget=forms.PasswordInput, label="Повтор пароля")
+    avatar = forms.ImageField(required=False, label="Аватар")
 
     def clean_username(self):  # пробелы
         username = self.cleaned_data['username']
@@ -36,6 +37,9 @@ class RegistrationForm(forms.Form):
 
     def clean_avatar(self):
         avatar = self.cleaned_data['avatar']
+        if avatar is None:
+            return
+        avatar.name = f"{self.cleaned_data['username']}_avatar"
         return avatar
 
     def clean(self):
@@ -47,8 +51,8 @@ class RegistrationForm(forms.Form):
 
 
 class LoginForm(forms.Form):
-    username = forms.CharField()
-    password = forms.CharField(widget=forms.PasswordInput())
+    username = forms.CharField(label="Псевдоним")
+    password = forms.CharField(widget=forms.PasswordInput(), label="Пароль")
 
     # def clean(self):
     #     return self.cleaned_data

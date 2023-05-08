@@ -3,7 +3,7 @@
 {% block content %}
 
     <div class="text-center new_question my-1">
-        <h3 class="font-italic">Log in</h3>
+        <h3 class="font-italic">Войти</h3>
     </div>
     <div class="card mt-3">
         <div class="card-body">
@@ -12,12 +12,12 @@
                 {% if error %}
                     <div class="alert alert-short alert-danger">{{ error }}</div>
                     <a href="{% url 'accounts:registration' %}">
-                        <button class="btn btn-success btn-lg my-2" type="button">Register</button>
+                        <button class="btn btn-success btn-lg my-2" type="button">Зарегистрироваться</button>
                     </a>
                 {% endif %}
                 {{ form|crispy }}
                 <div class="col OK_btn text-center">
-                    <button class="btn btn-success" id="edit" type="submit">OK</button>
+                    <button class="btn btn-success" id="edit" type="submit">ОК</button>
                 </div>
             </form>
         </div>

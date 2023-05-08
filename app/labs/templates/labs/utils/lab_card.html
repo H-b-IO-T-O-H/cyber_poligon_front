@@ -5,21 +5,21 @@
     <div class="card-header" id="headingOne">
         <h5 class="mb-0">
             <button class="btn btn-link" data-toggle="collapse" data-target="#collapse{{ lab.linked_post.id }}"
-                    aria-expanded="false" aria-controls="collapse{{ lab.linked_post.id }}">
-                {{ lab.linked_post.title|truncatewords:100 }}
+                    aria-expanded="false" aria-controls="collapse{{ lab.id }}">
+                {{ lab.title|truncatewords:100 }}
             </button>
         </h5>
     </div>
 
-    <div id="collapse{{ lab.linked_post.id }}" class="collapse show" aria-labelledby="headingOne"
+    <div id="collapse{{ lab.id }}" class="collapse show" aria-labelledby="headingOne"
          data-parent="#labs_catalog">
         <div class="card-body">
             <div>
               <span>
-              {{ lab.linked_post.text }}
+              {{ lab.description }}
           </span>
             </div>
-            <form action='{% url 'articles:display_lab' lab.id %}' method='POST'>
+            <form action='{% url 'labs:display_lab' lab.id %}' method='POST'>
                  {% csrf_token %}
                 <button id="lab-load-btn-{{ lab.id }}" type="submit" class="btn btn-dark prepareLab mt-4">Приступить
                 </button>

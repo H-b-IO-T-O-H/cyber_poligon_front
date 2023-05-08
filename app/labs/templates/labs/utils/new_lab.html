@@ -2,19 +2,21 @@
 {% load static %}
 {% load crispy_forms_filters %}
 {% block content %}
+    <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet"/>
     <div class="text-center new_question my-1">
-        <h3 class="font-italic">Новый пост</h3>
+        <h3 class="font-italic">Новая лабораторная работа</h3>
     </div>
     <div class="card mt-3">
         <div class="card-body">
             {% if error %}
                 <div class="alert alert-short alert-danger">{{ error }}</div>
             {% endif %}
-            <form method="POST" action="{% url 'articles:new_post' %}">
+            <form id="new_lab_form" method="POST" action="{% url 'labs:new_lab' %}">
                 {% csrf_token %}
                 {{ form|crispy }}
+                {% include 'labs/utils/dropdown_with_search.html' %}
                 <div class="col ask_btn text-center">
-                    <button class="btn btn-success" id="edit" type="submit">Опубликовать</button>
+                    <button class="btn btn-success" id="new_lab_btn_save" type="button">Опубликовать</button>
                 </div>
             </form>
         </div>

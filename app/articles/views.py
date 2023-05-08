@@ -1,16 +1,12 @@
 import json
 
 from articles.forms import PostForm, CommentForm
-from articles.models import Post, Comment, Tag, LikeDislike, Lab
+from articles.models import Post, Comment, Tag, LikeDislike
 from django.contrib.auth.decorators import login_required
 from django.core.handlers.wsgi import WSGIRequest
 from django.core.paginator import Paginator
 from django.http import HttpResponse
 from django.shortcuts import render, redirect, get_object_or_404
-
-from app.articles.task_pool import TaskManager, Task
-
-task_manager = TaskManager()
 
 
 def index(request: WSGIRequest):
@@ -26,9 +22,9 @@ def index(request: WSGIRequest):
 
     sort_key = filter_map.get(query_filter, '-create_date')
     if sort_key == '-is_pinned':
-        questions_list = Post.objects.all().filter(is_pinned=True, post_type='post').order_by('-create_date')
+        questions_list = Post.objects.all().filter(is_pinned=True).order_by('-create_date')
     else:
-        questions_list = Post.objects.all().filter(post_type='post').order_by(sort_key)
+        questions_list = Post.objects.all().order_by(sort_key)
     question_context = paginate(questions_list, request, 5)
     question_context.update({'sort_key': sort_key})
     return render(request, 'articles/index.html', context=question_context)
@@ -45,11 +41,8 @@ def new_post(request):
         if not form.is_valid():
             return redirect(request.META['HTTP_REFERER'])
         tags = form.cleaned_data['tags'].split()
-        # if request.user.username == 'root' and form.cleaned_data['post_type'] == 'lab':
-        #     return render(request, 'articles/utils/new_post.html', {'error': "root can't create labs"})
         post_full = Post.objects.create_post(author=request.user, title=form.cleaned_data['title'],
                                              text=form.cleaned_data['text'], is_pinned=form.cleaned_data['pinned'],
-                                             post_type=form.cleaned_data['post_type'],
                                              tags=tags)
         if post_full:
             post_full.save()
@@ -129,28 +122,14 @@ def vote(request):
     return HttpResponse(data_object.total_likes, status=200)
 
 
-def labs_catalog(request):
-    context = {}
-    labs = Lab.objects.all().order_by('-create_date')
-    context.update({'labs': labs})
-    return render(request, 'articles/utils/labs_catalog.html', context=context)
-
-
-def display_lab(request, lab_id):
-    context = {}
-    user = request.user
-    task = task_manager.get_user_task(user_id=user.id)
-    if task is not None:
-        context.update({'error': 'Для пользователя уже запущено виртуальное окружение', 'task': task})
-        return render(request, 'articles/utils/lab.html', context=context)
-    lab = get_object_or_404(Lab, id=lab_id)
-    task = task_manager.push_task(Task(user_id=user.id, task_path=lab.task_path))
-    context.update({'status': 'ok', 'task': task})
-    return render(request, 'articles/utils/lab.html', context=context)
-
-
-def task_status(request, user_id, task_id):
-    resp = task_manager.task_status(user_id, task_id)
-    if resp['status'] is None:
-        return HttpResponse(resp, status=404)
-    return HttpResponse(json.dumps(resp), status=200)
+@login_required
+def get_posts(request: WSGIRequest):
+    search = request.GET.get('search')
+    page = request.GET.get('page')
+    if search == '':
+        return HttpResponse(status=200)
+    if len(search) < 3:
+        return HttpResponse('слишком короткий запрос (< 3 символов)', status=400)
+    res = Post.objects.all().filter(title__icontains=search).order_by('-create_date')
+    data = [{"id": res[i].id, "text": res[i].title} for i in range(len(res))]
+    return HttpResponse(json.dumps({"results": data}), status=200)

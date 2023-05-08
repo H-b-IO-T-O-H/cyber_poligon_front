@@ -79,3 +79,72 @@ const Pending = 'pending',
         timeout: 2000
     })
 })();
+
+
+$(document).ready(function () {
+    let multi_select = $('.js-example-basic-multiple');
+    let multi_select_parent = $('#multi-select');
+    let form_group_linked_post = $("div[id=div_id_linked_post]")[0];
+
+    if (!form_group_linked_post) {
+        return;
+    }
+    multi_select.select2();
+
+    form_group_linked_post.style.display = 'none'
+
+    $("input[name=pinned]").change(function (e) {
+        let elem = e.target;
+        if (elem !== this) {
+            elem = elem.parentNode;
+        }
+        if (elem.checked) {
+            multi_select_parent[0].style.display = ''
+        } else {
+            multi_select_parent[0].style.display = 'none'
+        }
+        multi_select.select2({
+            ajax: {
+                delay: 1000,
+                url: '/get_posts/',
+                data: function (params) {
+                    // Query parameters will be ?search=[term]&page=[page]
+                    return {
+                        search: params.term || '',
+                        page: params.page || 1
+                    };
+                },
+                processResults: function (data) {
+                    if (data) {
+                        return $.parseJSON(data);
+                    }
+                    return {results: []}
+                },
+                cache: true,
+            },
+            minimumInputLength: 3,
+            maximumSelectionLength: 1
+        });
+    });
+
+});
+
+
+$(document).ready(function () {
+    let form = $('#new_lab_form');
+    if (!form[0]) {
+        return;
+    }
+    let lab_btn = $('#new_lab_btn_save');
+    lab_btn[0].addEventListener("click", function () {
+        let multi_select = $('.js-example-basic-multiple');
+        let linked_post = $("input[name=linked_post]")[0];
+
+        if (multi_select[0].value != null) {
+            linked_post.value = multi_select[0].value;
+            lab_btn[0].setAttribute('type', 'submit')
+        }
+    })
+})
+
+

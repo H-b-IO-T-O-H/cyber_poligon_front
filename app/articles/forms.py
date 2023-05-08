@@ -3,15 +3,6 @@ from django import forms
 
 class PostForm(forms.Form):
     title = forms.CharField(label='Заголовок', max_length=255)
-    post_type = forms.ChoiceField(
-        label="Тип",
-        choices=(
-            ('post', "Пост (размещается на форуме)"),
-            ('lab', "ЛР (размешается в каталоге лабораторных работ)")
-        ),
-        widget=forms.RadioSelect,
-        initial='post'
-    )
     text = forms.CharField(label='Текст', widget=forms.Textarea(attrs={'rows': '3'}))
     tags = forms.CharField(label="Тэги", required=False, max_length=50)
     pinned = forms.BooleanField(label="Закрепить", required=False)
