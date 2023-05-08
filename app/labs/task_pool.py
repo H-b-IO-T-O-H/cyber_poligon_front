@@ -1,6 +1,5 @@
 import enum
 import logging
-import os
 import queue
 import subprocess
 import time
@@ -25,12 +24,13 @@ class TaskStatus(enum.Enum):
 
 
 class Task:
-    def __init__(self, user_id, task_path):
-        self.task_path = ''
+    def __init__(self, user_id, executable):
+        self.executable = executable
         self.user_id = user_id
         self.id = str(uuid.uuid4())
         self.status: TaskStatus = TaskStatus.Pending
         self.exception = ''
+        self.log = ''
         self.create_ts = time.time()
 
 
@@ -67,21 +67,21 @@ class TaskManager:
         return resp
 
     def run(self):
-        task = self.incoming_queue.get()
+        task: Task = self.incoming_queue.get()
         self.mu.acquire()
         self.progress_pool[task.user_id][task.id].status = TaskStatus.Running
         self.mu.release()
         try:
-            start = time.time()
-            with open(task.task_path) as script:
-                content = script.read()
-            process = subprocess.Popen(content, stdout=subprocess.PIPE, stderr=subprocess.PIPE, shell=True)
+            process = subprocess.Popen(task.executable, stdout=subprocess.PIPE, stderr=subprocess.PIPE, shell=True)
             output, error = process.communicate()
             if error != b'':
-                raise (error.decode("utf-8"))
+                raise Exception(error.decode("utf-8"))
             if output != b'':
-                logging.info(output.decode("utf-8"))
-            logger.info(f"Success. query took {time.time() - start:.2f} sec")
+                log = output.decode("utf-8")
+                self.mu.acquire()
+                self.progress_pool[task.user_id][task.id].log = log
+                logging.info(log)
+                self.mu.release()
         except Exception as e:
             self.mu.acquire()
             self.progress_pool[task.user_id][task.id].status = TaskStatus.Failed

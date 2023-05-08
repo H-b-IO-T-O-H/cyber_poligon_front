@@ -20,7 +20,7 @@ class Lab(models.Model):
     title = models.CharField(max_length=255)
     description = models.CharField(max_length=512)
     executable = models.CharField(max_length=1024)
-    linked_post = models.ForeignKey(Post, on_delete=models.CASCADE, blank=True, null=True)
+    linked_post = models.ForeignKey(Post, on_delete=models.SET_NULL, blank=True, null=True)
     create_date = models.DateTimeField(auto_now_add=True)
 
     def publish(self):

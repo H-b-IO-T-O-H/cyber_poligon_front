@@ -49,7 +49,7 @@ def display_lab(request, lab_id):
         context.update({'error': 'Для пользователя уже запущено виртуальное окружение', 'task': task})
         return render(request, 'labs/utils/lab.html', context=context)
     lab = get_object_or_404(Lab, id=lab_id)
-    task = task_manager.push_task(Task(user_id=user.id, task_path=lab.executable))
+    task = task_manager.push_task(Task(user_id=user.id, executable=lab.executable))
     context.update({'status': 'ok', 'task': task})
     return render(request, 'labs/utils/lab.html', context=context)
 

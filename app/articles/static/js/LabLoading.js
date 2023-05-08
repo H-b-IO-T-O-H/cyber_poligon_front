@@ -27,7 +27,7 @@ const Pending = 'pending',
     Canceled = 'canceled',
     Failed = 'failed';
 
-
+let retries = 0;
 (function poll() {
     const max_retries = 10;
     let elem = document.getElementsByClassName('task-status')[0];
@@ -39,12 +39,16 @@ const Pending = 'pending',
     let ids = id.split('_')
     let user_id = ids[0];
     let task_id = ids[1];
+    let spinner = document.getElementById(`lab-load-spin-${task_id}`);
+    const error_text = `Возникла ошибка при выполнении скриптов инициализации ЛР.
+                            Попробуйте обновить страницу или
+                            обратитесь к администратору. Task ID: ${task_id}`
+
     let poller = setTimeout(function () {
         poll();
-    }, 500000);
-    let retries = 0;
+    }, 5000);
     $.ajax({
-        url: `/task_status/${user_id}&${task_id}`,
+        url: `/labs/task_status/${user_id}&${task_id}`,
         type: "POST",
         success: function (resp) {
             let json = $.parseJSON(resp);
@@ -56,24 +60,30 @@ const Pending = 'pending',
                     lab_desc.innerHTML = 'Задача в очереди на обработку...'
                     break;
                 case Running:
-                    retries += 1;
                     lab_desc.innerHTML = 'Запускаем скрипты инициализации...'
-                    console.log(retries);
-                    if (retries > max_retries)
-                        console.log("stop polling");
-                    clearTimeout(poller);
                     break;
                 case Success:
                 case Canceled:
                 case Failed:
-                    let spinner = document.getElementById(`lab-load-spin-${task_id}`);
                     spinner.style.display = 'none';
-                    lab_desc.innerHTML = `Возникла ошибка при выполнении скриптов инициализации ЛР: ${json['exception']}`
+                    lab_desc.innerHTML =
+                        `Возникла ошибка при выполнении скриптов инициализации ЛР: ${json['exception']}
+                            Обратитесь к администратору. Task ID: ${task_id}`
             }
-            clearTimeout(poller);
+            retries += 1;
+            if (retries > max_retries) {
+                console.log("stop polling");
+                clearTimeout(poller);
+            }
         },
         error: function (e) {
-            console.log('something went wrong on server:', e)
+            spinner.style.display = 'none';
+            retries += 1;
+            if (retries > max_retries) {
+                console.log("stop polling");
+                clearTimeout(poller);
+            }
+            lab_desc.innerHTML = error_text
         },
         complete: poller,
         timeout: 2000

@@ -130,7 +130,6 @@ MEDIA_ROOT = os.path.join(BASE_DIR, 'media_files')
 
 STATIC_URL = '/statics/'
 STATIC_ROOT = os.path.join(BASE_DIR, 'statics')
-LAB_SCRIPTS_FOLDER = os.path.join(BASE_DIR, 'labs')
 # STATICFILES_DIRS = [
 #     os.path.join(BASE_DIR, 'accounts/media/avatars'),
 # ]
