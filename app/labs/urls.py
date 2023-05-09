@@ -8,7 +8,8 @@ urlpatterns = [
     path('new_lab/', views.new_lab, name='new_lab'),
     path('labs_catalog/', views.labs_catalog, name='labs_catalog'),
     path('display_lab/<int:lab_id>', views.display_lab, name='display_lab'),
-    path('task_status/<int:user_id>&<str:task_id>', views.task_status, name='task_status')
+    path('task_status/<int:user_id>&<str:task_id>', views.task_status, name='task_status'),
+    path('download/<str:path>', views.download, name='download')
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 
 

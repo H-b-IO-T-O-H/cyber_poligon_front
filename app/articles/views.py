@@ -37,6 +37,8 @@ def new_post(request):
             return render(request, 'articles/utils/new_post.html', {'form': form})
         return redirect('accounts:login')
     else:
+        if not request.user.is_authenticated:
+            return HttpResponse(status=403)
         form = PostForm(request.POST)
         if not form.is_valid():
             return redirect(request.META['HTTP_REFERER'])

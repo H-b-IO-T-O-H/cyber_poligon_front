@@ -16,7 +16,6 @@ class TaskStatus(enum.Enum):
     Pending = 'pending'
     Running = 'running'
     Success = 'success'
-    Canceled = 'canceled'
     Failed = 'failed'
 
     def __str__(self):
@@ -63,7 +62,10 @@ class TaskManager:
     def task_status(self, user_id, task_id) -> dict:
         task = self.get_user_task(user_id, task_id)
         resp = {"status": str(task.status) if task is not None else None,
-                "exception": task.exception if task is not None else 'no task in pool'}
+                "exception": task.exception if task is not None else 'no task in pool',
+                "log": '',
+                # "log": task.log if task is not None else '',
+                }
         return resp
 
     def run(self):
@@ -80,7 +82,6 @@ class TaskManager:
                 log = output.decode("utf-8")
                 self.mu.acquire()
                 self.progress_pool[task.user_id][task.id].log = log
-                logging.info(log)
                 self.mu.release()
         except Exception as e:
             self.mu.acquire()

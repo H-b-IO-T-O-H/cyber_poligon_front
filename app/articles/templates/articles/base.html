@@ -15,7 +15,8 @@
     <form class="col-4">
         <input class="form-control" type="search" placeholder="Search" aria-label="Search">
     </form>
-    <div class="col-4 row">
+    {% if request.user.is_superuser %}
+        <div class="col-4 row">
         <div class="dropdown col-6">
             <button class="btn btn-success btn-lg my-2 center-block dropdown-toggle" type="button"
                     id="dropdownMenuButton"
@@ -27,11 +28,14 @@
                 <a class="dropdown-item" href="{% url 'labs:new_lab' %}">Лабораторную работу</a>
             </div>
         </div>
-        <div class="col-6">
-            <a href="{% url 'labs:labs_catalog' %}">
-                <button class="btn btn-success btn-lg my-2 center-block" type="submit">Каталог ЛР</button>
-            </a>
-        </div>
+    {% else %}
+        <div class="col-4 row">
+    {% endif %}
+    <div class="col-6">
+        <a href="{% url 'labs:labs_catalog' %}">
+            <button class="btn btn-success btn-lg my-2 center-block" type="submit">Каталог ЛР</button>
+        </a>
+    </div>
     </div>
     <div class="col-2">
         {% if request.user.is_anonymous %}

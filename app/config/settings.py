@@ -43,6 +43,7 @@ INSTALLED_APPS = [
     'accounts',
     'labs',
     'crispy_forms',
+    'crispy_bootstrap4',
     'grappelli',
 ]
 
@@ -63,7 +64,8 @@ ROOT_URLCONF = 'config.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [os.path.join(BASE_DIR, 'articles/templates'), os.path.join(BASE_DIR, 'accounts/templates')]
+        'DIRS': [os.path.join(BASE_DIR, 'articles/templates'), os.path.join(BASE_DIR, 'accounts/templates'),
+                 os.path.join(BASE_DIR, 'labs/templates')]
         ,
         'APP_DIRS': True,
         'OPTIONS': {

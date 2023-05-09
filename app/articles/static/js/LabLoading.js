@@ -24,7 +24,6 @@ $.ajaxSetup({
 const Pending = 'pending',
     Running = 'running',
     Success = 'success',
-    Canceled = 'canceled',
     Failed = 'failed';
 
 let retries = 0;
@@ -55,6 +54,7 @@ let retries = 0;
             if (lab_desc == null) {
                 lab_desc = document.getElementById('lab-description');
             }
+            console.log(json)
             switch (json['status']) {
                 case Pending:
                     lab_desc.innerHTML = 'Задача в очереди на обработку...'
@@ -63,7 +63,12 @@ let retries = 0;
                     lab_desc.innerHTML = 'Запускаем скрипты инициализации...'
                     break;
                 case Success:
-                case Canceled:
+                    lab_desc.innerHTML = `Среда подготовлена. Лог: ${json['log']}`
+                    clearTimeout(poller);
+                    let btns_group = document.getElementById('vpn-conf-download');
+                    btns_group.style.display = ''
+                    spinner.style.display = 'none';
+                    return;
                 case Failed:
                     spinner.style.display = 'none';
                     lab_desc.innerHTML =
@@ -78,6 +83,7 @@ let retries = 0;
         },
         error: function (e) {
             spinner.style.display = 'none';
+            console.log('error')
             retries += 1;
             if (retries > max_retries) {
                 console.log("stop polling");
@@ -86,7 +92,7 @@ let retries = 0;
             lab_desc.innerHTML = error_text
         },
         complete: poller,
-        timeout: 2000
+        //timeout: 2000
     })
 })();
 

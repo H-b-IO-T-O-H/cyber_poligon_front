@@ -1,11 +1,15 @@
 import json
+import os
 
-from django.http import HttpResponse
+from django.contrib.auth.decorators import login_required
+from django.http import HttpResponse, Http404
 from django.shortcuts import render, get_object_or_404, redirect
 
 from labs.models import Lab
 from labs.forms import LabForm
 from labs.task_pool import TaskManager, Task
+
+from config import settings
 
 task_manager = TaskManager()
 
@@ -42,6 +46,8 @@ def labs_catalog(request):
 
 
 def display_lab(request, lab_id):
+    if not request.user.is_authenticated:
+        return redirect('accounts:login')
     context = {}
     user = request.user
     task = task_manager.get_user_task(user_id=user.id)
@@ -59,3 +65,14 @@ def task_status(request, user_id, task_id):
     if resp['status'] is None:
         return HttpResponse(resp, status=404)
     return HttpResponse(json.dumps(resp), status=200)
+
+
+@login_required
+def download(request, path):
+    file_path = os.path.join(settings.MEDIA_ROOT, path)
+    if os.path.exists(file_path):
+        with open(file_path, 'rb') as fh:
+            response = HttpResponse(fh.read(), content_type="application/vnd.ms-excel")
+            response['Content-Disposition'] = 'inline; filename=' + os.path.basename(file_path)
+            return response
+    raise Http404
