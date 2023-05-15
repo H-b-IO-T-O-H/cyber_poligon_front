@@ -5,11 +5,17 @@ class LabForm(forms.Form):
     title = forms.CharField(label='Заголовок', max_length=255)
     description = forms.CharField(label='Описание', widget=forms.Textarea(attrs={'rows': '2'}), required=False)
     script = forms.CharField(label='Исполняемый скрипт', widget=forms.Textarea(attrs={'rows': '5'}), required=False)
+    correct_answer = forms.CharField(label='Правильный ответ',
+                                     help_text='{"answer": {"field1": "value1"}}',
+                                     widget=forms.Textarea(attrs={'rows': '3'}), required=False)
     pinned = forms.BooleanField(label="Добавить ссылку на пост", required=False)
     linked_post = forms.IntegerField(disabled=True, required=False)
 
     def clean_pinned(self):
         return self.cleaned_data['pinned']
+
+    def clean_correct_answer(self):
+        return self.cleaned_data['correct_answer']
 
     def clean_description(self):
         return self.cleaned_data['description']

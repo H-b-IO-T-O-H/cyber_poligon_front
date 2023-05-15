@@ -111,7 +111,6 @@ class Comment(models.Model):
     text = models.TextField()
     create_date = models.DateTimeField(auto_now_add=True)
     total_likes = models.IntegerField(default=0)
-    correct = models.BooleanField(blank=True, default=False)
 
     def publish(self):
         self.create_date = timezone.now()

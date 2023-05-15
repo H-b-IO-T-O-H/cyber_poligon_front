@@ -30,6 +30,7 @@ def new_lab(request):
                                           title=form.cleaned_data['title'],
                                           description=form.cleaned_data['description'],
                                           executable=form.cleaned_data['script'],
+                                          correct_answer=form.cleaned_data['correct_answer'],
                                           linked_post_id=form.cleaned_data['linked_post'])
         if lab_full:
             lab_full.save()
